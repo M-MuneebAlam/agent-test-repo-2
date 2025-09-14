@@ -1,102 +1,59 @@
-import streamlit as st
 import os
-import glob
-from ui_components import HomePageUI
+import streamlit as st
+from config.app_config import setup_page_config
+from config.api_config import setup_api_keys_ui, show_getting_started_info
+from utils.page_utils import PageDiscovery
+from ui_components.home_ui import HomePageUI, ChatbotUI
 
-st.set_page_config(
-    page_title="LLM Bootcamp Project",
-    page_icon='🤖',
-    layout='wide',
-    initial_sidebar_state="expanded"
-)
+# Configure the app
+setup_page_config()
 
+# Setup API keys UI - this will show the key input form or local dev status
+api_keys_configured = setup_api_keys_ui()
 
-# Apply centralized home page styling
+# Add logo to the sidebar
+ChatbotUI.add_sidebar_logo()
+
+# Apply styling and render hero
 HomePageUI.apply_home_styling()
-
-# Render hero section using centralized component
 HomePageUI.render_hero_section()
 
-st.markdown("### Available AI Assistants:")
+# Show main content only if API keys are configured
+if api_keys_configured:
+    st.markdown("### Available AI Assistants:")
 
-# Automatically discover pages
-pages_dir = "pages"
-if os.path.exists(pages_dir):
-    page_files = glob.glob(f"{pages_dir}/*.py")
-    page_files.sort()
-    
-    def extract_page_info(file_path):
-        """Extract title and description from file docstring or comments"""
-        try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-                
-            # Look for docstring at top of file
-            if '"""' in content:
-                start = content.find('"""')
-                end = content.find('"""', start + 3)
-                if start != -1 and end != -1:
-                    docstring = content[start+3:end].strip()
-                    lines = docstring.split('\n')
-                    title = lines[0].strip() if lines else ""
-                    description = lines[1].strip() if len(lines) > 1 else ""
-                    return title, description
-        except:
-            pass
+    # Initialize page discovery
+    page_discovery = PageDiscovery()
+
+    if page_discovery.validate_pages_directory():
+        page_files = page_discovery.get_available_pages()
         
-        # Fallback: generate from filename
-        base_name = os.path.basename(file_path)
-        clean_name = base_name.replace('.py', '').replace('_', ' ')
-        # Remove leading numbers like "1_"
-        if clean_name[0].isdigit() and '_' in clean_name:
-            clean_name = clean_name.split('_', 1)[1]
-        title = clean_name.title()
-        return title, "AI assistant page"
-    
-    def get_page_info(filename):
-        """Get specific page info based on filename"""
-        filename_lower = filename.lower()
-        
-        if '1_basic' in filename_lower:
-            return "💬", "Basic AI Chat", "Simple AI conversation"
-        elif '2_chatbot_agent' in filename_lower:
-            return "🔍", "Search Enabled Chat", "AI with internet search capabilities"
-        elif '3_chat_with_your_data' in filename_lower:
-            return "📚", "RAG", "Retrieval-Augmented Generation with documents"
-        elif '4_mcp_agent' in filename_lower:
-            return "🔧", "MCP Chatbot", "Model Context Protocol integration"
-        else:
-            # Fallback for any other files
-            clean_name = filename.replace('.py', '').replace('_', ' ').title()
-            return "🤖", clean_name, "AI assistant page"
-    
-    # Create columns based on number of pages
-    num_pages = len(page_files)
-    cols = st.columns(num_pages)
-    
-    for i, page_file in enumerate(page_files):
-        page_name = os.path.basename(page_file)
-        
-        with cols[i]:
-            # Get page info based on filename
-            icon, title, description = get_page_info(page_name)
-            button_text = f"{icon} {title}"
+        if page_files:
+            # Navigation buttons
+            cols = st.columns(len(page_files))
             
-            if st.button(button_text, key=page_name, use_container_width=True):
-                st.switch_page(page_file)
-
-    # Enhanced feature list using centralized components
-    st.markdown("""
-    <div class="feature-list">
-        <h3 style="color: #00d4aa; margin-bottom: 1.5rem; text-align: center;">✨ Available Features</h3>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    for page_file in page_files:
-        page_name = os.path.basename(page_file)
-        icon, title, description = get_page_info(page_name)
-        HomePageUI.render_feature_card(icon, title, description)
-
+            for i, page_file in enumerate(page_files):
+                with cols[i]:
+                    icon, title, description = page_discovery.get_page_info(page_file)
+                    button_text = f"{icon} {title}"
+                    
+                    if st.button(button_text, key=os.path.basename(page_file), use_container_width=True):
+                        st.switch_page(page_file)
+            
+            # Feature showcase
+            st.markdown("""
+            <div class="feature-list">
+                <h3 style="color: #00d4aa; margin-bottom: 1.5rem; text-align: center;">✨ Available Features</h3>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            for page_file in page_files:
+                icon, title, description = page_discovery.get_page_info(page_file)
+                HomePageUI.render_feature_card(icon, title, description)
+        else:
+            st.info("No AI assistant pages found in the pages directory.")
+    else:
+        st.error("Pages directory not found!")
 else:
-    st.error("Pages directory not found!")
-    st.markdown("Available pages will be automatically discovered when the pages/ directory exists.")
+    # Show getting started info when keys are not configured
+    show_getting_started_info()
