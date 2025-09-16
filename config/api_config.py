@@ -313,32 +313,137 @@ def display_missing_keys_error(missing_keys, include_mcp_info=False):
 
 def show_getting_started_info():
     """Show getting started information when API keys are not configured."""
-    st.markdown("### 🚀 Getting Started")
+    # Modern header section
+    st.markdown("""
+    <div style="text-align: center; margin: 3rem 0 2rem 0;">
+        <h3 style="color: #00d4aa; font-size: 1.8rem; font-weight: 600; margin-bottom: 0.5rem;">
+            🚀 Welcome to LLM Bootcamp Project
+        </h3>
+        <p style="color: #6b7280; font-size: 1rem; margin: 0;">
+            Configure your API keys in the sidebar to unlock all AI capabilities
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Info banner
     st.info("👈 Configure your API keys and MCP server in the sidebar to access all AI assistants")
     
+    # Modern card layout with consistent dimensions
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("#### 🔑 Required Configuration")
-        st.markdown("- **OpenAI API Key**: For all AI chat functionality")
-        st.markdown("- **Tavily API Key**: For web search capabilities")
-        st.markdown("- **MCP Server URL**: For advanced tool integration")
+        # Required Configuration Card
+        st.markdown("""
+        <div style="
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.05) 0%, rgba(0, 212, 170, 0.02) 100%);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        ">
+            <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 1.5rem; margin-right: 0.5rem;">🔑</span>
+                <h4 style="color: #00d4aa; margin: 0; font-size: 1.1rem; font-weight: 600;">Required Configuration</h4>
+            </div>
+            <div style="flex: 1; overflow: hidden;">
+                <p style="color: #64748b; margin: 0; font-size: 0.85rem; line-height: 1.5;">
+                    • <strong>OpenAI API Key</strong>: All AI chat functionality<br>
+                    • <strong>Tavily API Key</strong>: Web search capabilities<br>
+                    • <strong>MCP Server URL</strong>: Advanced tool integration
+                </p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
-        st.markdown("#### 🆓 Free Tiers Available")
-        st.markdown("- **OpenAI**: $5 free credits for new accounts")
-        st.markdown("- **Tavily**: 1,000 free searches/month")
+        # Free Tiers Card
+        st.markdown("""
+        <div style="
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.05) 0%, rgba(0, 212, 170, 0.02) 100%);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        ">
+            <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 1.5rem; margin-right: 0.5rem;">🆓</span>
+                <h4 style="color: #00d4aa; margin: 0; font-size: 1.1rem; font-weight: 600;">Free Tiers Available</h4>
+            </div>
+            <div style="flex: 1; overflow: hidden;">
+                <p style="color: #64748b; margin: 0; font-size: 0.85rem; line-height: 1.5;">
+                    • <strong>OpenAI</strong>: $5 free credits for new accounts<br>
+                    • <strong>Tavily</strong>: 1,000 free searches/month<br>
+                    • Start building immediately with generous limits
+                </p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("#### 💡 Why Your Own Configuration?")
-        st.markdown("- Full control over usage and costs")
-        st.markdown("- Better privacy and security")
-        st.markdown("- Personal rate limits")
-        st.markdown("- Professional development practice")
+        # Why Your Own Configuration Card
+        st.markdown("""
+        <div style="
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.05) 0%, rgba(0, 212, 170, 0.02) 100%);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        ">
+            <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 1.5rem; margin-right: 0.5rem;">💡</span>
+                <h4 style="color: #00d4aa; margin: 0; font-size: 1.1rem; font-weight: 600;">Why Your Own Configuration?</h4>
+            </div>
+            <div style="flex: 1; overflow: hidden;">
+                <p style="color: #64748b; margin: 0; font-size: 0.85rem; line-height: 1.5;">
+                    • Full control over usage and costs<br>
+                    • Better privacy and security<br>
+                    • Personal rate limits and priority access
+                </p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
-        st.markdown("#### 🔒 Security")
-        st.markdown("- Keys stored only in your browser session")
-        st.markdown("- No server-side storage")
-        st.markdown("- Clear when you close the browser")
+        # Security Card
+        st.markdown("""
+        <div style="
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.05) 0%, rgba(0, 212, 170, 0.02) 100%);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        ">
+            <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 1.5rem; margin-right: 0.5rem;">🔒</span>
+                <h4 style="color: #00d4aa; margin: 0; font-size: 1.1rem; font-weight: 600;">Security</h4>
+            </div>
+            <div style="flex: 1; overflow: hidden;">
+                <p style="color: #64748b; margin: 0; font-size: 0.85rem; line-height: 1.5;">
+                    • Keys stored only in your browser session<br>
+                    • No server-side storage or logging<br>
+                    • Clear when you close the browser
+                </p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     with st.expander("🛠️ MCP Server Deployment Options"):
         st.markdown("""
